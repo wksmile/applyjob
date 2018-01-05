@@ -1,5 +1,5 @@
 import React from 'react'
-import {List,InputItem,Radio,WingBlank,WhiteSpace,Button} from 'antd-mobile'
+import {List,InputItem,Radio,WhiteSpace,Button} from 'antd-mobile'
 import {Redirect} from 'react-router-dom'
 import Logo from '../../component/logo/logo'
 import {connect} from 'react-redux'
@@ -55,12 +55,12 @@ class Register extends React.Component{
           >确认密码</InputItem>
           <WhiteSpace/>
           <RadioItem
-            checked={this.state.type=='genuis'}
+            checked={this.state.type==='genuis'}
             onChange={()=>this.handleChange('type','genuis')}
           >牛人</RadioItem>
           <WhiteSpace/>
           <RadioItem
-            checked={this.state.type=='boss'}
+            checked={this.state.type==='boss'}
             onChange={()=>this.handleChange('type','boss')}
           >Boss</RadioItem>
           <WhiteSpace/>
@@ -74,4 +74,3 @@ class Register extends React.Component{
 }
 
 export default Register
-
