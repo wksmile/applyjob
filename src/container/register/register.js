@@ -16,7 +16,7 @@ class Register extends React.Component{
       user:'',
       pwd:'',
       repeatpwd:'',
-      type: 'genius'   // boss
+      type: 'genuis'   // boss
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -29,7 +29,6 @@ class Register extends React.Component{
   }
   handleRegister(){
     this.props.register(this.state)
-    console.log(this.state)
   }
   render(){
     const RadioItem = Radio.RadioItem
