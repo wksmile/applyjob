@@ -6,6 +6,10 @@ const User = model.getModel('user')
 const Chat = model.getModel('chat')
 const _filter = {'pwd':0,'__v':0}    // {'pwd':0}控制显示的字段，0表示不显示
 
+// Chat.remove({},function (e, d) {
+//
+// })
+
 Router.get('/list',function (req, res) {
    //User.remove({user:'kain'},function (e, d) {})  // 清除所有用户
   // get参数用query获取，post参数用body获取
@@ -16,12 +20,18 @@ Router.get('/list',function (req, res) {
 })
 Router.get('/getmsglist',function (req, res) {
   const user = req.cookies.userid
-  // '$or':[{from:user,to:user}]
-  Chat.find({},function (err, doc) {
-    if(!err) {
-      return res.json({code:0,msgs:doc})
-    }
+  User.find({},function (e,userdoc) {
+    let users = {}
+    userdoc.forEach(v=>{
+      users[v._id] = {name:v.user,avatar:v.avatar}
+    })
+    Chat.find({'$or':[{from:user,to:user}]},function (err, doc) {
+      if(!err) {
+        return res.json({code:0,msgs:doc,users:users})
+      }
+    })
   })
+  // '$or':[{from:user,to:user}]
 })
 Router.post('/update',function (req, res) {
   const userid = req.cookies.userid
