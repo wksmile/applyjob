@@ -1,5 +1,5 @@
 import React from 'react'
-import {Redirect} from 'react-router-dom'
+import {Redirect,withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Result,List,WhiteSpace,Button,Modal} from 'antd-mobile'
 import browserCookies from 'browser-cookies'
@@ -12,10 +12,10 @@ import {logoutSubmit} from '../../redux/user.redux'
 class User extends React.Component{
   constructor(props){
     super(props)
+   // this.state = {}
     this.logout = this.logout.bind(this)
   }
   logout(){
-    console.log('logout')
     const alertOut = Modal.alert
     alertOut('退出', '确定退出吗?', [
       { text: '取消', onPress: () => console.log('cancel'), style: 'default' },
@@ -26,7 +26,7 @@ class User extends React.Component{
     ])
   }
   render(){
-    console.log(this.props)
+    // console.log(this.props)
     const props = this.props
     return props.user ? (
       <div>
@@ -45,7 +45,12 @@ class User extends React.Component{
           </List.Item>
         </List>
         <WhiteSpace/>
-        <Button onClick={this.logout}>退出</Button>
+        {/*-------------------------------issue button is here--------------------------------------------*/}
+        <Button type="primary"
+                onClick={this.logout}
+                style={{zIndex:100}}
+        >退出</Button>
+        {/*-------------------------------------------------------------------------------------*/}
       </div>
     ) : <Redirect to={props.redirectTo}/>
   }
