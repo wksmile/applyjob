@@ -6,13 +6,11 @@ import NavLinkBar from '../navlink/navlink'
 import Boss from '../boss/boss'
 import Genius from '../genius/genius'
 import User from '../user/user'
+import Msg from '../msg/msg'
 import {getMsgList,recvMsg} from '../../redux/chat.redux'
+//import Login from '../../container/login/login'
 
 import '../../index.css'
-
-function Msg() {
-  return <h2>Msg首页</h2>
-}
 
 @connect(
   state=>state,
@@ -61,20 +59,21 @@ class Dashboard extends React.Component {
       },
     ]
     const path = ['/boss','/genius','/msg','/me']
-    console.log('path',pathname)
-    return (
+    // console.log('pathname',pathname)
+    // path.indexOf(pathname)
+    return path.indexOf(pathname)>-1 ? (
       <div>
         <NavBar className="fixd-header" mode="dark">{navList.find( v => v.path===pathname).title}</NavBar>
         <div style={{marginTop:45}}>
           <Switch>
-            {navList.map(v=>(
-              <Route key={v.path} path={v.path} component={v.component} />
+            {navList.map(v=> (
+                <Route key={v.path} path={v.path} component={v.component}/>
             ))}
           </Switch>
         </div>
         <NavLinkBar data={navList}/>
       </div>
-      )
+      ) : <Redirect to="login"/>
   }
 }
 

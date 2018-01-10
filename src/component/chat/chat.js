@@ -1,12 +1,12 @@
 import React from 'react'
 import {List,InputItem, NavBar,Icon,Grid} from 'antd-mobile'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 import {connect} from 'react-redux'
 
 import {getMsgList,sendMsg,recvMsg} from '../../redux/chat.redux'
 import {getChatId} from '../../util'
 
-const socket = io('ws://localhost:9093')
+// const socket = io('ws://localhost:9093') 通过redux去通信
 
 @connect(
   state=>state,
@@ -42,15 +42,17 @@ class Chat extends React.Component{
     this.setState({text:''})
   }
   render(){
-    const emoji = '🤷 🤷 😄🤷🏻🤷🏻🤷🏻🤷🏻 🤷 🤷 😄🤷🏻🤷🏻🤷🏻🤷🏻 🤷 🤷 😄🤷🏻🤷🏻🤷🏻🤷🏻 🤷 🤷 😄🤷🏻🤷🏻🤷🏻🤷🏻 🤷 🤷 😄🤷🏻🤷🏻🤷🏻 🤷'.split(' ').filter(v=>v).map(v=>({
+    const emoji = '🤔 😂 😍 😊 😀 😁 😂 🤣 😃 😅 😊 😋 😎 😐 😝 😖 😰 😞 🤑 😧 👿 👵 👨 😾 🤖 🤡 😳 🤤 😏 😑 😋 😴 🙁 😱 😦 😕 😴 😑 😊 😗 😚 😑'.split(' ').filter(v=>v).map(v=>({
       text: v
     }))
-    const userid = this.props.match.params.user
-    console.log(this.props.match.params.user)
+    const userid = this.props.match.params.user   // 当前聊天用户的id
+    // console.log(this.props.match.params.user)
     const users = this.props.chat.users
+    console.log('users',users)
     if(!users[userid]) return null      // 获取不到用户id返回null
     const chatid = getChatId(userid, this.props.user._id)   // 当前聊天的id
     const chatmsgs = this.props.chat.chatmsg.filter(v=>v.chatid===chatid)
+    console.log('chatmsgs',chatmsgs)
     return (
       <div id='chat-page'>
         <NavBar
@@ -63,7 +65,7 @@ class Chat extends React.Component{
           {users[userid].name}
         </NavBar>
         {chatmsgs.map(v=>{
-          const avatar = require(`../img${users[v.from].avatar}.png`)
+          const avatar = require(`../img/${users[v.from].avatar}.jpg`)
           return v.from === userid ? (
           <List key={v._id}>
             <List.Item
@@ -73,8 +75,8 @@ class Chat extends React.Component{
             </List.Item>
           </List>
           ) : (
-            <List key={v._id}>
-              <List.Item class="chat-me" extra={<img src={avatar} />}>
+            <List key={v._id+'0'}>
+              <List.Item className="chat-me" extra={<img src={avatar} alt="" />}>
                 {v.content}
               </List.Item>
             </List>
@@ -93,7 +95,7 @@ class Chat extends React.Component{
                   <span style={{marginRight:15}} onClick={()=>{
                     this.setState({showEmoji:!this.state.showEmoji})
                     this.fixCarouse()
-                  }}>😄🤷🏻🤷🏻🤷🏻🤷🏻</span>
+                  }} role="img" aria-label="send emoji">🤔</span>
                   <span onClick={()=>this.handleSumbit()}>发送</span>
                 </div>
               }

@@ -7,7 +7,7 @@ const MSG_LIST = 'MSG_LIST'
 // 读取信息
 const MSG_RECV = 'MSG_RECV'
 // 标志已读
-const MSG_READ = 'MSG_READ'
+// const MSG_READ = 'MSG_READ'
 
 const initState = {
   chatmsg: [],   // 信息列表
@@ -18,7 +18,7 @@ const initState = {
 export function chat(state = initState, action) {
   switch (action.type) {
     case MSG_LIST:
-      return {...state,users:action.payload.users,chatmsg:action.payload.msgs,unread:action.payload.filter(v=>!v.read&&v.to===action.payload.userid).length}
+      return {...state,users:action.payload.users,chatmsg:action.payload.msgs,unread:action.payload.msgs.filter(v=>!v.read&&v.to===action.payload.userid).length}
     case MSG_RECV:
       const n = action.payload.to === action.payload.userid ? 1 : 0
       console.log('action.payload',action.payload)
@@ -33,7 +33,7 @@ function msgRecv(msg,userid) {
 }
 
 function msgList(msgs,users,userid) {
-  return {type:MSG_LIST,payload:msgs,users,userid}
+  return {type:MSG_LIST,payload:{msgs,users,userid}}
 }
 
 export function recvMsg() {
@@ -59,6 +59,7 @@ export function getMsgList() {
         if(res.status===200 && res.data.code===0) {
           // console.log('getstate',getState())
           const userid = getState().user._id   // 当前登录的用户
+          console.log('查询到的users',res)
           dispatch(msgList(res.data.msgs,res.data.users,userid))
         }
       })
