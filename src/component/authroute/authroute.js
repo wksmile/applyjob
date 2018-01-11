@@ -14,15 +14,16 @@ class AuthRoute extends React.Component {
   componentDidMount(){
     const publicList = ['/login','/register']
     const pathname = this.props.history.location.pathname
-    // 如果实在指定的页面就不会跳转
+    // 如果是在指定的页面就不会跳转
     if(publicList.indexOf(pathname)>-1) {
       return null
     }
+    //
     axios.get('/user/info')
       .then(res=>{
         if(res.status === 200) {
           if(res.data.code === 0) {
-            // 有登陆信息
+            // 有登陆信息返回用户的登录信息
             this.props.loadData(res.data.data)
           } else {
             // 未登录

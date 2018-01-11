@@ -14,32 +14,55 @@ Router.get('/list',function (req, res) {
    //User.remove({user:'kain'},function (e, d) {})  // 清除所有用户
   // get参数用query获取，post参数用body获取
   const type = req.query.type
+  // 找出boss/genuins类型的所有用户
   User.find({type},function(err, doc) {
     return res.json({code:0,data:doc})
   })
 })
+
+// 返回查询chat表中所有from或to都是请求用户的聊天消息
 Router.get('/getmsglist',function (req, res) {
   const user = req.cookies.userid
   User.find({},function (e,userdoc) {
     let users = {}
+    // User模型表中得到所有用户的信息，得到用户id对应用户的user和avatar两个字段的对象
     userdoc.forEach(v=>{
       users[v._id] = {name:v.user,avatar:v.avatar}
     })
     Chat.find({'$or':[{from:user,to:user}]},function (err, doc) {
-      if(!err) {
-        return res.json({code:0,msgs:doc,users:users})
+      if(err) {
+        return res.json({code:1,msgs:'服务器端出错'})
       }
+      // msgs为请求用户所有关联的消息，users为所有的用户{id:{name,avatar}}形式
+      return res.json({code:0,msgs:doc,users:users})
     })
   })
-  // '$or':[{from:user,to:user}]
 })
+
+Router.post('/readmsg',function (req, res) {
+  const userid = req.cookies.userid
+  const {from} = req.body
+  Chat.update(
+    {from,to:userid},
+    {'$set':{read:true}},
+    {'multi':true},   // 默认只会修改一行，让修改所有的
+    function (err, doc) {
+      if(!err) {  //  nModified为修改的行数
+        return res.json({code:0,num: doc.nModified})
+      }
+      return res.json({code:1,msg:'修改失败'})
+  })
+})
+
 Router.post('/update',function (req, res) {
   const userid = req.cookies.userid
   if(!userid) {
     return json.dumps({code:1})
   }
-  const body = req.body
+  const body = req.body   //  更新的数据
   User.findByIdAndUpdate(userid,body,function (err, doc) {
+    if(err) return res.json({code:1,msg:'服务器端出错'})
+    // 返回用户的用户名user和类型type，并且加上上传的 desc,title,company,money，avatar五个字段，一起返回7个字段
     const data = Object.assign({},{
       user:doc.user,
       type:doc.type
@@ -47,6 +70,7 @@ Router.post('/update',function (req, res) {
     return res.json({code:0,data})
   })
 })
+
 Router.post('/login',function (req, res) {
   const {user,pwd} = req.body
   User.findOne({user,pwd:md5Pwd(pwd)},_filter,function (err, doc) {
@@ -72,7 +96,7 @@ Router.post('/register',function (req, res) {
       }
       const {user,type,_id} = d
       res.cookie('userid',_id)
-      return res.json({code:0,data:{user}})   // 注册完成，改变状态
+      return res.json({code:0,data:{user}})   // 注册完成，改变状态，返回用户名
     })
   })
 })

@@ -3,14 +3,14 @@ import {List,InputItem, NavBar,Icon,Grid} from 'antd-mobile'
 // import io from 'socket.io-client'
 import {connect} from 'react-redux'
 
-import {getMsgList,sendMsg,recvMsg} from '../../redux/chat.redux'
+import {getMsgList,sendMsg,recvMsg,readMsg} from '../../redux/chat.redux'
 import {getChatId} from '../../util'
 
 // const socket = io('ws://localhost:9093') 通过redux去通信
 
 @connect(
   state=>state,
-  {getMsgList,sendMsg,recvMsg}
+  {getMsgList,sendMsg,recvMsg,readMsg}
 )
 class Chat extends React.Component{
   constructor(props){
@@ -22,12 +22,18 @@ class Chat extends React.Component{
   }
   componentDidMount(){   // 进入该页面获取用户信息
     if(!this.props.chat.chatmsg.length) {
-      this.props.getMsgList()
-      this.props.recvMsg()
+      this.props.getMsgList()    // 获取所有用户的{id:{name,avatar}}形式，当前用户的所有相关消息，未读消息数
+      this.props.recvMsg()       // 开始监听
     }
     this.fixCarouse()
   }
-  fixCarouse(){
+  // 离开页面时清除消息条数
+  componentWillUnmount(){
+    // 获取聊天对象id
+    const to = this.props.match.params.user
+    this.props.readMsg(to)
+  }
+  fixCarouse(){   // 修复grid组件的bug
     setTimeout(function () {   // 手动派发事件让emoji显示正常
       window.dispatchEvent(new Event('resize'))
     },0)
@@ -45,14 +51,18 @@ class Chat extends React.Component{
     const emoji = '🤔 😂 😍 😊 😀 😁 😂 🤣 😃 😅 😊 😋 😎 😐 😝 😖 😰 😞 🤑 😧 👿 👵 👨 😾 🤖 🤡 😳 🤤 😏 😑 😋 😴 🙁 😱 😦 😕 😴 😑 😊 😗 😚 😑'.split(' ').filter(v=>v).map(v=>({
       text: v
     }))
-    const userid = this.props.match.params.user   // 当前聊天用户的id
+    // 当前聊天用户的id
+    const userid = this.props.match.params.user
     // console.log(this.props.match.params.user)
+    // 应为这里connect是state=>state所以要加上chat.users，若state=>state.chat,可以写成this.props.users
+    // users为所有用户{id:{name,avatar}}形式的数据
     const users = this.props.chat.users
-    console.log('users',users)
-    if(!users[userid]) return null      // 获取不到用户id返回null
+    // console.log('users',users)
+    if(!users[userid]) return null      // 获取不到聊天用户id返回null
     const chatid = getChatId(userid, this.props.user._id)   // 当前聊天的id
+    // chatmsg是from或to是当前登录用户的所有消息的列表，得到当前用户与对应用户聊天的消息
     const chatmsgs = this.props.chat.chatmsg.filter(v=>v.chatid===chatid)
-    console.log('chatmsgs',chatmsgs)
+    // console.log('chatmsgs',chatmsgs)
     return (
       <div id='chat-page'>
         <NavBar
@@ -65,12 +75,13 @@ class Chat extends React.Component{
           {users[userid].name}
         </NavBar>
         {chatmsgs.map(v=>{
+          // 聊天对象的头像
           const avatar = require(`../img/${users[v.from].avatar}.jpg`)
+          // 判断是对方发的消息还是自己发的，显示在不同的边
           return v.from === userid ? (
           <List key={v._id}>
             <List.Item
-              thumb={avatar}
-            >
+              thumb={avatar}>
               {v.content}
             </List.Item>
           </List>

@@ -15,7 +15,7 @@ const initState = {
 // reducer
 export function user(state=initState, action) {
   switch (action.type) {
-    case AUTH_SUCCESS:
+    case AUTH_SUCCESS:   // redirectTo更具用户类型判断重定向的网站地址
       return {...state, msg:'', redirectTo:getRedirectPath(action.payload), ...action.payload}
     case ERROR_MSG:
       return {...state, isAuth:false, msg:action.msg}
@@ -28,7 +28,9 @@ export function user(state=initState, action) {
   }
 }
 
-function authSuccess(obj) {
+/*************************action*******************************/
+
+function authSuccess(obj) {  // data剩余user模型中除了pwd字段外的所有自定义的字段
   const {pwd,...data} = obj   // 过滤掉pwd字段，不让前端显示
   return {type: AUTH_SUCCESS, payload:data}
 }
@@ -46,6 +48,14 @@ export function logoutSubmit() {
   return {type: LOGOUT}
 }
 
+/********************************************************************/
+// 在bossinfo.js和geniusinfo.js组件中使用，用于完善用户的信息 数据格式为
+/*{
+  title: '',
+  desc: '',
+  company: '',
+  money: ''
+} */
 export function update(data) {
   return dispatch => {
     axios.post('/user/update',data)
@@ -68,6 +78,7 @@ export function login({user, pwd}) {
       user,pwd
     }).then(res=>{
       if(res.status===200&&res.data.code===0) {
+        // 登录成功返回该用户的user列表信息
         dispatch(authSuccess(res.data.data))
       } else {
         dispatch(errorMsg(res.data.msg))

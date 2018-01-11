@@ -5,22 +5,23 @@ import {withRouter} from 'react-router-dom'
 
 @withRouter
 class UserCard extends React.Component{
+  // 父组件传进来的所有boss或genuis的用户列表
   static propTypes = {
     userlist: PropTypes.array.isRequired
   }
 
   handleClick(v){
-    console.log('enter chat',v)
-    console.log('-----')
+    // console.log('enter chat',v)
+    // url中v._id是聊天的对象id，不是用户自己的id，v为聊天对象user模型的信息
     this.props.history.push(`/chat/${v._id}`)
   }
 
   render() {
-    const styleCard = {height: 40}
-    console.log('userlist  tt',this.props.userlist)
+    // console.log('userlist',this.props.userlist)
     return (
       <WingBlank>
         {this.props.userlist.map(v => (
+          // 用户存在头像说明已经完善了用户的信息，才会在列表显示
           v.avatar ?
             <Card
               style={{zIndex:100}}
@@ -30,7 +31,7 @@ class UserCard extends React.Component{
                 title={v.user}
                 thumb={require(`../img/${v.avatar}.jpg`)}
                 extra={<span>{v.title}</span>}
-                thumbStyle={styleCard}
+                thumbStyle={{height: 40}}
               />
               <Card.Body>
                 {v.type==='boss'?<div>公司：{v.company}</div>:null}

@@ -19,13 +19,14 @@ import '../../index.css'
 class Dashboard extends React.Component {
   componentDidMount(){
     if(!this.props.chat.chatmsg.length) {
-      this.props.getMsgList()
-      this.props.recvMsg()
+      this.props.getMsgList()    // 获取所有用户的{id:{name,avatar}}形式，当前用户的所有相关消息，未读消息数
+      this.props.recvMsg()       // 开始监听
     }
   }
   render() {
     const {pathname} = this.props.location
     const user = this.props.user
+    // 下面的几个点击路由
     const navList = [
       {
         path: '/boss',

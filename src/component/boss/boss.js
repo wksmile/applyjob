@@ -9,6 +9,7 @@ import UserCard from '../usercard/usercard'
 )
 class Boss extends React.Component{
   componentDidMount() {
+    // 得到boss的所有user模型下得到信息，除了pwd外
     this.props.getUserList('boss')
   }
   render(){

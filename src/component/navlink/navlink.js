@@ -13,16 +13,17 @@ class NavLinkBar extends React.Component{
     data: PropTypes.array
   }
   render() {
+    // 过滤影藏的组件
     const navList = this.props.data.filter( v => !v.hide)
     const {pathname} = this.props.location
 
-    console.log(navList)
+    // console.log(navList)
     return (
       <TabBar>
         {navList.map(v=>(
           <TabBar.Item
             badge={v.path==='/msg'?this.props.unread:0}
-            key={v}
+            key={v.icon}
             title={v.text}
             icon={{uri:require(`./img/${v.icon}.png`)}}
             selectedIcon={{uri:require(`./img/${v.icon}-active.png`)}}

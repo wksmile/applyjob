@@ -10,12 +10,12 @@ const models = {
     'pwd':{type:String, require:true},
     'type':{type:String, require:true},
     'avatar': {type:String},    //  头像
-    'desc':{type:String},       // 个人简介或职位简介
+    'desc':{type:String},       // 个人简介或职位简介 下面四个字段通过完善用户信息 update上传
     'title':{type:String},      // 职位名
     'company': {type:String},   // 如果是boss还有company和money字段
     'money':{type:String}
   },
-  chat:{    // 聊天模型
+  chat:{    // 聊天消息模型
     'chatid':{type:String,require:true},
     'from':{type:String,require:true},
     'to':{type:String,require:true},

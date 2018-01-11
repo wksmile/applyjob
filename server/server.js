@@ -12,15 +12,15 @@ const io = require('socket.io')(server)
 
 // io是全局的请求，里面的socket是当前得到请求
 io.on('connection',function (socket) {
-  console.log('user login')
+  // console.log('user login')
   socket.on('sendmsg',function (data) {
     const {from,to,msg} = data
+    // 更根据发送接收的用户id生成消息的唯一列表
     const chatid = [from,to].sort().join('_')
     Chat.create({chatid,from,to,content:msg},function (err, doc) {
+      console.log('doc._doc',doc)
       io.emit('recvmsg',Object.assign({},doc._doc))
     })
-    // console.log(data)
-    // io.emit('recvmsg',data)
   })
 })
 
