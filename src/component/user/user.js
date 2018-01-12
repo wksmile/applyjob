@@ -1,5 +1,5 @@
 import React from 'react'
-import {Redirect,withRouter} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Result,List,WhiteSpace,Button,Modal} from 'antd-mobile'
 import browserCookies from 'browser-cookies'

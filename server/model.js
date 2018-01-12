@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 // 连接
 const DB_URL = 'mongodb://localhost:27017/immoc-chat'
-mongoose.connect(DB_URL)
+mongoose.connect(DB_URL,{useMongoClient: true})
 
 const models = {
   user: {

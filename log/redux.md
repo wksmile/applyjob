@@ -1,5 +1,7 @@
 # redux learn 
 
+需要看视屏12-3到12-12学习redux原理
+
  - Redux专注于状态管理，和react解耦
  - 单一状态，单向数据流
  - 核心概念：store,state,action,reducer

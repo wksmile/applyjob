@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 
 import {getMsgList,sendMsg,recvMsg,readMsg} from '../../redux/chat.redux'
 import {getChatId} from '../../util'
+import QueueAnim from 'rc-queue-anim'
 
 // const socket = io('ws://localhost:9093') 通过redux去通信
 
@@ -31,6 +32,7 @@ class Chat extends React.Component{
   componentWillUnmount(){
     // 获取聊天对象id
     const to = this.props.match.params.user
+    console.log(to)
     this.props.readMsg(to)
   }
   fixCarouse(){   // 修复grid组件的bug
@@ -74,6 +76,7 @@ class Chat extends React.Component{
         >
           {users[userid].name}
         </NavBar>
+        <QueueAnim delay={100}>
         {chatmsgs.map(v=>{
           // 聊天对象的头像
           const avatar = require(`../img/${users[v.from].avatar}.jpg`)
@@ -93,6 +96,7 @@ class Chat extends React.Component{
             </List>
           )
         })}
+        </QueueAnim>
         <div className="stick-footer">
           <List>
             <InputItem

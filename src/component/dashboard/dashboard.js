@@ -9,6 +9,7 @@ import User from '../user/user'
 import Msg from '../msg/msg'
 import {getMsgList,recvMsg} from '../../redux/chat.redux'
 //import Login from '../../container/login/login'
+// import QueueAnim from 'rc-queue-anim'
 
 import '../../index.css'
 
@@ -64,7 +65,7 @@ class Dashboard extends React.Component {
     // path.indexOf(pathname)
     return path.indexOf(pathname)>-1 ? (
       <div>
-        <NavBar className="fixd-header" mode="dark">{navList.find( v => v.path===pathname).title}</NavBar>
+        <NavBar className="fixd-header" mode="dark">{navList.find( v => v.path==pathname).title}</NavBar>
         <div style={{marginTop:45}}>
           <Switch>
             {navList.map(v=> (

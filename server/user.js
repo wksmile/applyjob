@@ -6,9 +6,9 @@ const User = model.getModel('user')
 const Chat = model.getModel('chat')
 const _filter = {'pwd':0,'__v':0}    // {'pwd':0}控制显示的字段，0表示不显示
 
-// Chat.remove({},function (e, d) {
-//
-// })
+Chat.remove({},function (e, d) {
+
+})
 
 Router.get('/list',function (req, res) {
    //User.remove({user:'kain'},function (e, d) {})  // 清除所有用户
@@ -42,12 +42,14 @@ Router.get('/getmsglist',function (req, res) {
 Router.post('/readmsg',function (req, res) {
   const userid = req.cookies.userid
   const {from} = req.body
+  // console.log(from+'    '+userid)
   Chat.update(
     {from,to:userid},
     {'$set':{read:true}},
     {'multi':true},   // 默认只会修改一行，让修改所有的
     function (err, doc) {
       if(!err) {  //  nModified为修改的行数
+        console.log('doc0',doc)
         return res.json({code:0,num: doc.nModified})
       }
       return res.json({code:1,msg:'修改失败'})

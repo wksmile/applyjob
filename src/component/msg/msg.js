@@ -51,7 +51,8 @@ class Msg extends React.Component{
               arrow="horizontal"
               onClick={()=>{
                 this.props.history.push(`/chat/${targetId}`)
-              }}>
+              }}
+              style={{zIndex:100}}>
                 {lastItem.content}
               <List.Item.Brief>{userinfo[targetId].name}</List.Item.Brief>
             </List.Item>
