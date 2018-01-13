@@ -20,6 +20,7 @@ class Chat extends React.Component{
       text:'',
       showEmoji: false
     }
+    this.handleSumbit = this.handleSumbit.bind(this)
   }
   componentDidMount(){   // 进入该页面获取用户信息
     if(!this.props.chat.chatmsg.length) {
@@ -111,7 +112,7 @@ class Chat extends React.Component{
                     this.setState({showEmoji:!this.state.showEmoji})
                     this.fixCarouse()
                   }} role="img" aria-label="send emoji">🤔</span>
-                  <span onClick={()=>this.handleSumbit()}>发送</span>
+                  <span onClick={this.handleSumbit}>发送</span>
                 </div>
               }
             >信息</InputItem>

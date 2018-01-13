@@ -67,9 +67,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "server": "node --harmony server/server.js",
     "server_bak": "nodemon server/server.js",
-    "server_build": "serve -s build"
+    "server_pm2": "pm2 start server/server.js"
   },
   "jest": {
     "collectCoverageFrom": [

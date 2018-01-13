@@ -75,7 +75,7 @@ export function readMsg(from) {
 export function recvMsg() {
   return (dispatch,getState) => {
     socket.on('recvmsg',function (data) {
-      // console.log('recvmsg',data)
+      console.log('recvmsg',data)
       const userid = getState().user._id   // 当前登录的用户
       dispatch(msgRecv(data, userid))
     })
