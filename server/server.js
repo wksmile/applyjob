@@ -37,6 +37,6 @@ app.use(function (req, res, next) {
   return res.sendFile(path.resolve('build/index.html'))
 })
 app.use('/',express.static(path.resolve('build')))
-server.listen(9093,function () {
-    console.log('Node app start at port 9093')
+server.listen(80,function () {
+    console.log('Node app start at port 80')
 })

@@ -49,7 +49,7 @@ Router.post('/readmsg',function (req, res) {
     {'multi':true},   // 默认只会修改一行，让修改所有的
     function (err, doc) {
       if(!err) {  //  nModified为修改的行数
-        console.log('doc0',doc)
+        // console.log('doc0',doc)
         return res.json({code:0,num: doc.nModified})
       }
       return res.json({code:1,msg:'修改失败'})
