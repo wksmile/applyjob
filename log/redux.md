@@ -1,4 +1,4 @@
-# redux learn 
+# redux learn
 
 需要看视屏12-3到12-12学习redux原理
 

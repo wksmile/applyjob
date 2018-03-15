@@ -47,6 +47,7 @@ class Chat extends React.Component{
     const from = this.props.user._id
     const to = this.props.match.params.user
     const msg = this.state.text
+    // console.log(msg);
     this.props.sendMsg({from,to,msg})
     this.setState({text:''})
   }
