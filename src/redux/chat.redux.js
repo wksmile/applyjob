@@ -59,7 +59,7 @@ function msgRead({from,userid,num}) {
 
 /*------------------------------------action-------------------------------------*/
 
-// from为我聊天的对象，需要把他发给我的消息变成已读,下面函数改写为await形式
+// from为我聊天的对象，需要把他发给我的消息变成已读,下面函数改写为await形式，
 export function readMsg(from) {
   return async (dispatch,getState)=>{
       const res = await axios.post('/user/readmsg',{from})
@@ -72,16 +72,17 @@ export function readMsg(from) {
   }
 }
 
+// 用在chat.js中，监听接收消息
 export function recvMsg() {
   return (dispatch,getState) => {
     socket.on('recvmsg',function (data) {
-      console.log('recvmsg',data)
+      console.log('recvmsg，收到服务器的触发的消息',data)
       const userid = getState().user._id   // 当前登录的用户
       dispatch(msgRecv(data, userid))
     })
   }
 }
-
+// 发送消息
 export function sendMsg({from, to, msg}) {
   return dispatch=>{
     socket.emit('sendmsg',{from,to,msg})

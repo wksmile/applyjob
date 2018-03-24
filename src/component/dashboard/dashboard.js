@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
   componentDidMount(){
     if(!this.props.chat.chatmsg.length) {
       this.props.getMsgList()    // 获取所有用户的{id:{name,avatar}}形式，当前用户的所有相关消息，未读消息数
-      this.props.recvMsg()       // 开始监听
+      // this.props.recvMsg()       // 开始监听
     }
   }
   render() {

@@ -20,6 +20,7 @@ io.on('connection',function (socket) {
     const chatid = [from,to].sort().join('_')
     Chat.create({chatid,from,to,content:msg},function (err, doc) {
       console.log('doc._doc',doc)
+      // 这里也是执行一次
       io.emit('recvmsg',Object.assign({},doc._doc))
     })
   })

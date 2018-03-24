@@ -1,5 +1,5 @@
 import React from 'react'
-import {List,InputItem, NavBar,Icon,Grid} from 'antd-mobile'
+import {List,InputItem, NavBar,Icon,Grid,Toast} from 'antd-mobile'
 // import io from 'socket.io-client'
 import {connect} from 'react-redux'
 
@@ -25,7 +25,7 @@ class Chat extends React.Component{
   componentDidMount(){   // 进入该页面获取用户信息
     if(!this.props.chat.chatmsg.length) {
       this.props.getMsgList()    // 获取所有用户的{id:{name,avatar}}形式，当前用户的所有相关消息，未读消息数
-      this.props.recvMsg()       // 开始监听
+      this.props.recvMsg()       // 开始监听服务器的消息
     }
     this.fixCarouse()
   }
@@ -48,8 +48,12 @@ class Chat extends React.Component{
     const to = this.props.match.params.user
     const msg = this.state.text
     // console.log(msg);
-    this.props.sendMsg({from,to,msg})
-    this.setState({text:''})
+    if(msg.trim()){
+      this.props.sendMsg({from,to,msg})
+      this.setState({text:''})
+    } else {
+      Toast.fail('不能发送空内容', 2)
+    }
   }
   render(){
     const emoji = '🤔 😂 😍 😊 😀 😁 😂 🤣 😃 😅 😊 😋 😎 😐 😝 😖 😰 😞 🤑 😧 👿 👵 👨 😾 🤖 🤡 😳 🤤 😏 😑 😋 😴 🙁 😱 😦 😕 😴 😑 😊 😗 😚 😑'.split(' ').filter(v=>v).map(v=>({
@@ -113,7 +117,7 @@ class Chat extends React.Component{
                     this.setState({showEmoji:!this.state.showEmoji})
                     this.fixCarouse()
                   }} role="img" aria-label="send emoji">🤔</span>
-                  <span onClick={this.handleSumbit}>发送</span>
+                  <span onClick={this.handleSumbit}>发gg送</span>
                 </div>
               }
             >信息</InputItem>
